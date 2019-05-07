@@ -51,7 +51,7 @@ public class ClienteService {
 		obj.setId(null);
 		obj = repo.save(obj);	
 		
-		enderecoRepository.saveAll(obj.getEnderecos());
+		enderecoRepository.save(obj.getEnderecos());
 		
 		return obj;
 		
@@ -109,10 +109,8 @@ public class ClienteService {
 		
 		return cli;
 		
-		
 	}
-	
-	
+		
 	private void update(Cliente newObj, Cliente obj) {
 		newObj.setNome(obj.getNome());
 		newObj.setEmail(obj.getEmail());
