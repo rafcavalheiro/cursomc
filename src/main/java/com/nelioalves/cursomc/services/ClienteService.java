@@ -3,14 +3,13 @@ package com.nelioalves.cursomc.services;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nelioalves.cursomc.domain.Cidade;
 import com.nelioalves.cursomc.domain.Cliente;
@@ -18,7 +17,6 @@ import com.nelioalves.cursomc.domain.Endereco;
 import com.nelioalves.cursomc.domain.enums.TipoCliente;
 import com.nelioalves.cursomc.dto.ClienteDTO;
 import com.nelioalves.cursomc.dto.ClienteNewDTO;
-import com.nelioalves.cursomc.repositories.CidadeRepository;
 import com.nelioalves.cursomc.repositories.ClienteRepository;
 import com.nelioalves.cursomc.repositories.EnderecoRepository;
 import com.nelioalves.cursomc.services.exceptions.DataIntegrityException;
@@ -30,10 +28,8 @@ import com.nelioalves.cursomc.services.exceptions.ObjectNotFoundException;
 public class ClienteService {
 	
 	@Autowired
-	private ClienteRepository repo;
+	private ClienteRepository repo;	
 	
-	@Autowired
-	private CidadeRepository cidadeRepository;	
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;	
@@ -51,14 +47,14 @@ public class ClienteService {
 		obj.setId(null);
 		obj = repo.save(obj);	
 		
-		enderecoRepository.save(obj.getEnderecos());
+		enderecoRepository.saveAll(obj.getEnderecos());
 		
 		return obj;
 		
 	}
 	public Cliente update (Cliente obj){		
 		Cliente newObj = buscar(obj.getId());
-		update(newObj, obj);
+		updateData(newObj, obj);
 		return repo.save(newObj);		
 		
 	}	
@@ -93,7 +89,7 @@ public class ClienteService {
 		
 		
 		Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOUcnpj(), TipoCliente.toEnum(objDto.getTipo()));
-		Cidade cid = cidadeRepository.findOne(objDto.getCidadeId());
+		Cidade cid = new Cidade(objDto.getCidadeId(),null , null);
 		Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cli, cid);
 		
 		cli.getEnderecos().add(end);
@@ -109,9 +105,11 @@ public class ClienteService {
 		
 		return cli;
 		
-	}
 		
-	private void update(Cliente newObj, Cliente obj) {
+	}
+	
+	
+	private void updateData(Cliente newObj, Cliente obj) {
 		newObj.setNome(obj.getNome());
 		newObj.setEmail(obj.getEmail());
 		

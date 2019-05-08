@@ -39,7 +39,7 @@ public class CategoriaService {
 	
 	public Categoria update (Categoria obj){		
 		Categoria newObj = buscar(obj.getId());
-		update(newObj, obj);
+		updateData(newObj, obj);
 		return repo.save(newObj);		
 		
 	}
@@ -70,7 +70,7 @@ public class CategoriaService {
 		return new Categoria(objDto.getId(), objDto.getNome());
 	}
 	
-	private void update(Categoria newObj, Categoria obj) {
+	private void updateData(Categoria newObj, Categoria obj) {
 		newObj.setNome(obj.getNome());		
 		
 	}
