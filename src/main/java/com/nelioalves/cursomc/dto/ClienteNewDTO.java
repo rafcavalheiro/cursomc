@@ -64,11 +64,11 @@ public class ClienteNewDTO implements Serializable {
 		this.email = email;
 	}
 
-	public String getCpfOUcnpj() {
+	public String getcpfOUcnpj() {
 		return cpfOUcnpj;
 	}
 
-	public void setCpfOUcnpj(String cpfOUcnpj) {
+	public void setcpfOUcnpj(String cpfOUcnpj) {
 		this.cpfOUcnpj = cpfOUcnpj;
 	}
 

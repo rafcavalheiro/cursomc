@@ -28,14 +28,14 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 	public boolean isValid(ClienteNewDTO objDto, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
 		
-		if(objDto.getTipo().equals(TipoCliente.PESSOAFISICA.getCod()) && !BR.isValidCPF(objDto.getCpfOUcnpj())) {
+		if(objDto.getTipo().equals(TipoCliente.PESSOAFISICA.getCod()) && !BR.isValidCPF(objDto.getcpfOUcnpj())) {
 			
-			list.add(new FieldMessage("cpfOuCnpj", "CPF inválido"));			
+			list.add(new FieldMessage("cpfOucnpj", "CPF inválido"));			
 		}
 		
-		if(objDto.getTipo().equals(TipoCliente.PESSOAJURIDICA.getCod()) && !BR.isValidCNPJ(objDto.getCpfOUcnpj())) {
+		if(objDto.getTipo().equals(TipoCliente.PESSOAJURIDICA.getCod()) && !BR.isValidCNPJ(objDto.getcpfOUcnpj())) {
 			
-			list.add(new FieldMessage("cpfOuCnpj", "CPF inválido"));			
+			list.add(new FieldMessage("cpfOucnpj", "CPF inválido"));			
 		}
 		
 		Cliente aux = repo.findByEmail(objDto.getEmail());
