@@ -17,7 +17,8 @@ public class ItemPedido implements Serializable{
 	
 	private Double desconto;
 	private Integer quantidade;
-	private Double preco;
+	private Double preco;	
+	
 	
 	public ItemPedido () {
 		
@@ -30,6 +31,10 @@ public class ItemPedido implements Serializable{
 		this.desconto = desconto;
 		this.quantidade = quantidade;
 		this.preco = preco;
+	}
+	
+	public double getSubtotal() {		
+		return (preco - desconto) * quantidade;
 	}
 	
 	@JsonIgnore
