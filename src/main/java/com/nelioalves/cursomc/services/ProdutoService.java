@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.nelioalves.cursomc.domain.Categoria;
+import com.nelioalves.cursomc.domain.ItemPedido;
 import com.nelioalves.cursomc.domain.Produto;
 import com.nelioalves.cursomc.repositories.CategoriaRepository;
 import com.nelioalves.cursomc.repositories.ProdutoRepository;
@@ -40,6 +41,10 @@ public class ProdutoService {
 		
 		return repo.findDistinctByNomeContainingAndCategoriasIn(nome, categorias, pageRequest);
 		
+	}
+
+	public ItemPedido findOne(Integer id) {		
+		return null;
 	}
 	
 
