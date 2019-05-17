@@ -13,24 +13,21 @@ import com.nelioalves.cursomc.services.DBService;
 @Configuration
 @Profile("dev")
 public class DevConfig {
-	
+
 	@Autowired
 	private DBService dbService;
-	
-	@Value("${spring.jpa.hibernate.ddl-auto=create}")
-	private String Strategy;
-	
+
+	@Value("${spring.jpa.hibernate.ddl-auto}")
+	private String strategy;
+
 	@Bean
 	public boolean instantiateDatabase() throws ParseException {
-		
-		
-		if(!"creat".equals(Strategy)) {
-			
+
+		if (!"create".equals(strategy)) {
 			return false;
 		}
-		
+
 		dbService.instantiateTestDatabase();
 		return true;
 	}
-
 }
