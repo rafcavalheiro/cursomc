@@ -114,6 +114,11 @@ public class ClienteService {
 		newObj.setEmail(obj.getEmail());
 		
 	}
+
+	public Cliente findOne(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 

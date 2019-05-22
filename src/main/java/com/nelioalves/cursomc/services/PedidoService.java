@@ -18,7 +18,6 @@ import com.nelioalves.cursomc.services.exceptions.ObjectNotFoundException;
 
 
 @Service
-
 public class PedidoService {
 	
 	@Autowired
@@ -31,38 +30,40 @@ public class PedidoService {
 	private PagamentoRepository pagamentoRepository;
 	
 	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
+	
+	@Autowired
 	private ProdutoService produtoService;
 	
 	@Autowired
-	private ItemPedidoRepository itemPedidoRepository;
+	private ClienteService clienteService;
 	
-	
-	public Pedido buscar(Integer id) {
+	public Pedido find(Integer id) {
 		Optional<Pedido> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
-		"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
-		}
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
+	}
 	
-	@Transactional
 	public Pedido insert(Pedido obj) {
 		obj.setId(null);
 		obj.setInstante(new Date());
+		obj.setCliente(clienteService.findOne(obj.getCliente().getId()));
 		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		obj.getPagamento().setPedido(obj);
-		if(obj.getPagamento() instanceof PagamentoComBoleto) {
+		if (obj.getPagamento() instanceof PagamentoComBoleto) {
 			PagamentoComBoleto pagto = (PagamentoComBoleto) obj.getPagamento();
-			boletoService.preencherPagamentoComBoleto(pagto,obj.getInstante());
+			boletoService.preencherPagamentoComBoleto(pagto, obj.getInstante());
 		}
 		obj = repo.save(obj);
 		pagamentoRepository.save(obj.getPagamento());
 		for (ItemPedido ip : obj.getItens()) {
 			ip.setDesconto(0.0);
-			ip.setPreco(produtoService.findOne(ip.getProduto().getId()).getPreco());
+			ip.setProduto(produtoService.findOne(ip.getProduto().getId()));
+			ip.setPreco(ip.getProduto().getPreco());
 			ip.setPedido(obj);
 		}
-		
 		itemPedidoRepository.saveAll(obj.getItens());
+		System.out.println(obj);
 		return obj;
-		
 	}
 }
